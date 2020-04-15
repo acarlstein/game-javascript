@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Run Unit Tests</title>  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  </head>
+  <body>
+    <h2>Game: Run Unit Test</h2>
+    <div id="mocha"></div>
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+    <script class="mocha-init">
+      mocha.setup('bdd');
+      //mocha.growl(); // Enables web notification
+      mocha.checkLeaks();    
+    </script>
+    <!-- *** Begin Invoking Unit Tests Here *** -->
+    <script src="test.spec.js"></script>
+    <!-- *** End Invoking Unit Tests Here *** -->
+    <script class="mocha-exec">
+      mocha.run();
+    </script>
+  </body>
+</html>
