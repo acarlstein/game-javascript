@@ -5,9 +5,33 @@
     <title>Game</title>
     <link rel="stylesheet" href="css/app.css" />
     <script lang="text/javascript" src="js/container.js"></script>
+    <script lang="text/javascript" src="js/game-loop.js"></script>
 </head>
 
 <body id="app">
     <canvas id="container" width="256" height="224"></canvas>
+    <script>
+        var gameLoop = GameLoop.getInstance()
+
+        window.requestAnimationFrame = window.requestAnimationFrame
+            || window.mozRequestAnimationFrame
+            || window.webkitRequestAnimationFrame
+            || window.msRequestAnimationFrame
+            || function(callback){
+            return setTimeout(callback, gameLoop.MAX_FPS)
+        } 
+
+        window.cancelAnimationFrame = window.cancelAnimationFrame
+            || window.mozCancelAnimationFrame
+            || function(requestID){
+            clearTimeout(requestID)
+        }
+        
+        gameLoop.setAnimationFrame = window.requestAnimationFrame;
+        gameLoop.setCancelAnimationFrame = window.cancelAnimationFrame;
+        gameLoop.setGraphicContainer(Container.getInstance());
+        window.requestAnimationFrame(gameLoop.run);
+       
+    </script>
 </body>
 </html>
