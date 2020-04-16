@@ -4,10 +4,18 @@
     <title>Run Unit Tests</title>  
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+    <style>
+      canvas#container {
+        position: absolute;
+        right: 50px;
+        top: 50px;
+        border: 1px solid black;
+      }
+    </style>
   </head>
   <body>
     <h2>Game: Run Unit Test</h2>
-    <div id="mocha"></div>
+    <div id="mocha"></div>    
     <script src="https://unpkg.com/chai/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
     <script class="mocha-init">
@@ -15,8 +23,15 @@
       //mocha.growl(); // Enables web notification
       mocha.checkLeaks();    
     </script>
-    <!-- *** Begin Invoking Unit Tests Here *** -->
+    <!-- *** Being including element to be tested *** -->
+    <script src="../src/js/base-object.js"></script>
+    <script src="../src/js/container.js"></script>
+    <script src="../src/js/game-loop.js"></script>
+    <!-- *** End including element to be tested *** -->
+    <!-- *** Begin Invoking Unit Tests Here *** -->    
     <script src="test.spec.js"></script>
+    <script src="container.spec.js"></script>
+    <script src="game-loop.spec.js"></script>
     <!-- *** End Invoking Unit Tests Here *** -->
     <script class="mocha-exec">
       mocha.run();
