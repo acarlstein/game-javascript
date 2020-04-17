@@ -27,11 +27,31 @@
             clearTimeout(requestID)
         }
         
-        gameLoop.setAnimationFrame = window.requestAnimationFrame;
-        gameLoop.setCancelAnimationFrame = window.cancelAnimationFrame;
-        gameLoop.setGraphicContainer(Container.getInstance());
-        window.requestAnimationFrame(gameLoop.run);
-       
+        gameLoop.setAnimationFrame(window.requestAnimationFrame);
+        gameLoop.setCancelAnimationFrame(window.cancelAnimationFrame);
+        var container = Container.getInstance();        
+        var width = 50;
+        
+        var fnDrawRect = function(){
+            console.log("fnDrawRect()");
+            container.fillRect(0, 0, width, 50, '#00FF00');
+            if (width < 100){
+                width += 1;
+            }
+        }
+        gameLoop.addAction(fnDrawRect)
+
+        var fnDrawCharacter = function(){
+            console.log("fnDrawCharacter()");
+            var img = new Image();
+            img.src = 'images/CharacterVector.png'
+            container.drawImage(10, 60, img)
+        }
+        gameLoop.addAction(fnDrawCharacter)
+
+        gameLoop.run();
+        setTimeout(function(){ gameLoop.stop()}, 2000);
+
     </script>
 </body>
 </html>

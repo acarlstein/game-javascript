@@ -4,14 +4,22 @@ var GameLoop = (function () {
 
   var instance;
   var animationFrameId = null;
-  var graphicContainer;
+  var actions = [];
+
   var animationFrame = function(callback){
     return window.setTimeout(callback, MAX_FPS); // 60 fps
   }
+  
   var cancelAnimationFrame = function(animationFrameId){
     clearTimeout(animationFrameId);
   }
-  
+
+  var runActions = function (){
+    for (var i = 0; i < actions.length; ++i){
+      actions[i]();
+    }
+  }
+
   const gameLoop = {
     class: "GameLoop",
     isRunning: false,
@@ -22,27 +30,29 @@ var GameLoop = (function () {
     setCancelAnimationFrame: function(newCancelAnimationFrame){
       cancelAnimationFrame = newCancelAnimationFrame;
     },
-    draw: function (){
-      console.log("draw()")
-      if(graphicContainer !== undefined){
-        graphicContainer.drawFilledRectangle(0, 0, 50, 50, '#f0A');
+    addAction: function(actionFunction){      
+      actions.push(actionFunction);
+    },
+    setActions: function(newActions){
+      if (newActions instanceof Array){
+        actions = newActions;
       }
     },
-    run: function () {
+    run: function runLoop() {
       this.isRunning = true;   
       try{
-        this.draw();
-      }catch(e){}
-      animationFrameId = animationFrame(this.run);
+        runActions();
+      }catch(e){
+        console.log(e);
+      }
+      animationFrameId = animationFrame(runLoop);
     },
     stop: function() {
+      console.log("stop()");
       this.isRunning = false
       cancelAnimationFrame(animationFrameId);
     },
-    setGraphicContainer: function(newGraphicContainer){
-      console.log(newGraphicContainer);
-      graphicContainer = newGraphicContainer;
-    }
+
   }
 
   function createInstance() {

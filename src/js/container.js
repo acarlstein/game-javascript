@@ -36,10 +36,23 @@ var Container = (function () {
       height: {
         value: getCanvas().height
       },
-      drawFilledRectangle: {
+      fillRect: {
         value: function(x, y, width, height, hexColor){
-          getContext().fillStyle = hexColor;
+          if (hexColor !== undefined){
+            getContext().fillStyle = hexColor;
+          }          
           getContext().fillRect(x, y, width, height);          
+        }
+      },
+      clearRect: {
+        value: function(x, y, width, height){
+          getContext().clearRect(x, y, width, height);
+        }
+      },
+      drawImage: {
+        value: function(x, y, image){
+          console.log("drawImage()");
+          getContext().drawImage(image, x, y);
         }
       }
     });
