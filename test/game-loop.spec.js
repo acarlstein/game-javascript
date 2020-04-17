@@ -46,26 +46,54 @@ describe('Game Loop', function() {
   })
   
   it('I can provide my own cancel animation frame if needed', function() {
-    var animationFrame = function(callback){
-      return 1234;
-    }
-    gameLoop.setAnimationFrame(animationFrame);
+    const animationFrame = chai.spy.returns(1234)
+    gameLoop.setAnimationFrame(animationFrame)
 
     var status = {
       wasCalled: false,
       animationFrameId: 0
     };
 
-    var cancelAnimationFrame = function(newAnimationFrameId){
+    var cancelAnimationFrame = chai.spy(function(newAnimationFrameId){
       status.wasCalled = true;
-      status.animationFrameId = newAnimationFrameId;
-    };
+      status.animationFrameId = newAnimationFrameId
+    })
 
-    gameLoop.setCancelAnimationFrame(cancelAnimationFrame);
-    gameLoop.run();
-    gameLoop.stop();
-    expect(status.wasCalled).to.be.true;
-    expect(status.animationFrameId).to.be.equal(1234);
+    gameLoop.setCancelAnimationFrame(cancelAnimationFrame)
+    gameLoop.run()
+    gameLoop.stop()
+    expect(status.wasCalled).to.be.true
+    expect(status.animationFrameId).to.be.equal(1234)
+    expect(animationFrame).to.have.been.called
+    expect(cancelAnimationFrame).to.have.been.called
+  })
+
+  describe('Managing Actions to run in loop', function() {
+
+    it('I can provide an action to be perform in the loop', function() {
+      gameLoop.setAnimationFrame(window.requestAnimationFrame)
+      gameLoop.setCancelAnimationFrame(window.cancelAnimationFrame)
+      var fn = chai.spy(function someAction(){})
+      gameLoop.addAction(fn)
+      gameLoop.run()
+      gameLoop.stop()
+      expect(fn).to.be.called
+    })
+
+    it('I can provide a list of actions to be perform in the loop', function() {
+      gameLoop.setAnimationFrame(window.requestAnimationFrame)
+      gameLoop.setCancelAnimationFrame(window.cancelAnimationFrame)
+      var fn1 = chai.spy(function action1(){})
+      var fn2 = chai.spy(function action2(){})
+      var fn3 = chai.spy(function action3(){})
+      gameLoop.setActions([fn1, fn2, fn3])
+      gameLoop.run()
+      gameLoop.stop()
+      expect(fn1).to.be.called
+      expect(fn2).to.be.called
+      expect(fn3).to.be.called
+    })
+
   })
 
 })
