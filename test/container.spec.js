@@ -53,10 +53,10 @@ describe('Canvas Container', function() {
       var canvas = document.querySelector("canvas#container")
       var b64Image = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
       
+      var testImage = getTestingImage()
       var testCanvas = document.createElement('canvas')
       testCanvas.width = canvas.width
       testCanvas.height = canvas.height
-      var testImage = getTestingImage()
       testCanvas.getContext('2d').drawImage(testImage, 0, 0)
       var b64TestImage = testCanvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
 
