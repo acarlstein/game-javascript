@@ -1,6 +1,5 @@
 var expect = chai.expect;
 
-
 describe('Canvas Container', function() {
 
   var container;
@@ -93,8 +92,8 @@ describe('Canvas Container', function() {
 
   function imageFound(){
     console.log("Image found");
-    console.log("- Width: " + this.width)
-    console.log("- Height: " + this.width)
+    //console.log("- Width: " + this.width)
+    //console.log("- Height: " + this.width)
   }
 
   function imageNotFound(){
