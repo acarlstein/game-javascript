@@ -25,38 +25,27 @@ var Container = (function () {
     return contextInstance;
   }
 
+  var container = {
+    class: "Container",
+    width: getCanvas().width,
+    height: getCanvas().height,
+    fillRect: function(x, y, width, height, hexColor){
+      if (hexColor !== undefined){
+        getContext().fillStyle = hexColor;
+      }          
+      getContext().fillRect(x, y, width, height);          
+    },
+    clearRect: function(x, y, width, height) {
+      getContext().clearRect(x, y, width, height);
+    },
+    drawImage: function(x, y, image) {         
+      getContext().drawImage(image, x, y);
+    }
+  };
+
   function createInstance() {
-    var object = Object.create(Object.prototype, {
-      class: {
-        value: "Container"
-      },
-      width: {
-        value: getCanvas().width
-      },
-      height: {
-        value: getCanvas().height
-      },
-      fillRect: {
-        value: function(x, y, width, height, hexColor){
-          if (hexColor !== undefined){
-            getContext().fillStyle = hexColor;
-          }          
-          getContext().fillRect(x, y, width, height);          
-        }
-      },
-      clearRect: {
-        value: function(x, y, width, height){
-          getContext().clearRect(x, y, width, height);
-        }
-      },
-      drawImage: {
-        value: function(x, y, image){
-          console.log("drawImage()");
-          getContext().drawImage(image, x, y);
-        }
-      }
-    });
-    return object;
+    container = Object.assign(container, Object.prototype);
+    return  Object.create(container);
   }
 
   return {

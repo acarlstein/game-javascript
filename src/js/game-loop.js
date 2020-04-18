@@ -20,7 +20,7 @@ var GameLoop = (function () {
     }
   }
 
-  const gameLoop = {
+  var gameLoop = {
     class: "GameLoop",
     isRunning: false,
     MAX_FPS: MAX_FPS,
@@ -48,7 +48,6 @@ var GameLoop = (function () {
       animationFrameId = animationFrame(runLoop);
     },
     stop: function() {
-      console.log("stop()");
       this.isRunning = false
       cancelAnimationFrame(animationFrameId);
     },
@@ -56,9 +55,8 @@ var GameLoop = (function () {
   }
 
   function createInstance() {
-    var object = Object.create(gameLoop);
-    Object.assign(Object.prototype, object.prototype);
-    return object;
+    gameLoop = Object.assign(gameLoop, Object.prototype);
+    return  Object.create(gameLoop);
   }
 
   return {

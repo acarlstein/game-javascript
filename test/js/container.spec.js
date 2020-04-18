@@ -1,6 +1,5 @@
 var expect = chai.expect;
 
-
 describe('Canvas Container', function() {
 
   var container;
@@ -53,10 +52,10 @@ describe('Canvas Container', function() {
       var canvas = document.querySelector("canvas#container")
       var b64Image = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
       
+      var testImage = getTestingImage()
       var testCanvas = document.createElement('canvas')
       testCanvas.width = canvas.width
       testCanvas.height = canvas.height
-      var testImage = getTestingImage()
       testCanvas.getContext('2d').drawImage(testImage, 0, 0)
       var b64TestImage = testCanvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
 
@@ -93,8 +92,8 @@ describe('Canvas Container', function() {
 
   function imageFound(){
     console.log("Image found");
-    console.log("- Width: " + this.width)
-    console.log("- Height: " + this.width)
+    //console.log("- Width: " + this.width)
+    //console.log("- Height: " + this.width)
   }
 
   function imageNotFound(){
