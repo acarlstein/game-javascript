@@ -64,13 +64,25 @@ describe('Canvas Container', function() {
 
   })
 
-  function getCanvasContext(){
-    var canvas = document.querySelector("canvas#container")
-    return canvas.getContext("2d")
+  it('zoom canvas', function(){
+    var canvas = getCanvas()
+    var originalHeight = canvas.style.height
+    var originalWidth = canvas.style.width
+    container.zoom(2)  
+    expect(canvas.style.height).to.be.equal(`${originalHeight.match(/\d+/g) * 2}px`)
+    expect(canvas.style.width).to.be.equal(`${originalWidth.match(/\d+/g) * 2}px`)
+  })
+
+  function getCanvas(){
+    return document.querySelector("canvas#container")
+  }
+
+  function getContext(){
+    return getCanvas().getContext("2d")
   }
 
   function getRGBAFromImage(x, y, width, height){
-    var context = getCanvasContext()
+    var context = getContext()
     var imageData = context.getImageData(x, y, width, height)
     return {
       "red": imageData.data[0],
