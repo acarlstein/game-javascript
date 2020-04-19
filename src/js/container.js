@@ -40,11 +40,17 @@ var Container = (function () {
     },
     drawImage: function(x, y, image) {         
       getContext().drawImage(image, x, y);
+    },
+    zoom: function(scale){
+      var cssProperties = `width: ${this.width * scale}px; height: ${this.height * scale}px;`
+      getCanvas().style.cssText = cssProperties
+      getCanvas().parentNode.style.cssText = cssProperties
     }
   };
 
   function createInstance() {
     container = Object.assign(container, Object.prototype);
+    container.zoom(1);
     return  Object.create(container);
   }
 
