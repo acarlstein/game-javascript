@@ -45,22 +45,46 @@ describe('Canvas Container', function() {
 
   describe('Working with images', function(){
 
-    it('Draw an image', function(){           
+    it('Draw an image with x and y coordinates', function(){           
       var image = getTestingImage()
-      container.drawImage(0, 0, image)
+      container.drawImage(image, 0, 0)
       
       var canvas = document.querySelector("canvas#container")
-      var b64Image = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
+      var b64Image = getImageAsB64FromCanvas(canvas)
       
       var testImage = getTestingImage()
-      var testCanvas = document.createElement('canvas')
-      testCanvas.width = canvas.width
-      testCanvas.height = canvas.height
+      var testCanvas = createCanvas(canvas.width, canvas.height)
       testCanvas.getContext('2d').drawImage(testImage, 0, 0)
-      var b64TestImage = testCanvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
+      var b64TestImage = getImageAsB64FromCanvas(testCanvas)
 
       expect(b64Image).to.be.equal(b64TestImage)
     })
+
+    it('Draw an image with x and y coordinates plus width and height', function(){           
+      var image = getTestingImage()
+      container.drawImage(image, 0, 0, 80, 80)
+      
+      var canvas = document.querySelector("canvas#container")
+      var b64Image = getImageAsB64FromCanvas(canvas)
+      
+      var testImage = getTestingImage()
+      var testCanvas = createCanvas(canvas.width, canvas.height)
+      testCanvas.getContext('2d').drawImage(testImage, 0, 0, 80, 80)
+      var b64TestImage = getImageAsB64FromCanvas(testCanvas)
+
+      expect(b64Image).to.be.equal(b64TestImage)
+    })
+
+    function createCanvas(width, height){      
+      var testCanvas = document.createElement('canvas')
+      testCanvas.width = width
+      testCanvas.height = height
+      return testCanvas
+    }
+
+    function getImageAsB64FromCanvas(canvas){
+      return canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
+    }
 
   })
 
