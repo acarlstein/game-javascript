@@ -1,0 +1,17 @@
+{
+  "entity": "actor",
+  "x": 0,
+  "y": 0,
+  "width": 16,
+  "height": 25,
+  "sequence": {
+    "values": [],
+    "index": 0
+  },
+  "sprite": {
+    "x": 0,
+    "y": 0,
+    "width": 16,
+    "height": 25
+  }
+}

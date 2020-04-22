@@ -18,6 +18,19 @@ describe('Canvas Container', function() {
     expect(container.height).to.be.gt(0)
   }); 
 
+  it('zoom canvas', function(){
+    var canvas = getCanvas()
+    var originalHeight = canvas.style.height
+    var originalWidth = canvas.style.width
+    container.zoom(2)  
+    expect(canvas.style.height).to.be.equal(`${originalHeight.match(/\d+/g) * 2}px`)
+    expect(canvas.style.width).to.be.equal(`${originalWidth.match(/\d+/g) * 2}px`)
+  })
+
+  function getCanvas(){
+    return document.querySelector("canvas#container")
+  }
+
   describe('Working with rectangles', function(){
 
     beforeEach(function() {
@@ -43,44 +56,6 @@ describe('Canvas Container', function() {
 
   })
 
-  describe('Working with images', function(){
-
-    it('Draw an image', function(){           
-      var image = getTestingImage()
-      container.drawImage(0, 0, image)
-      
-      var canvas = document.querySelector("canvas#container")
-      var b64Image = canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
-      
-      var testImage = getTestingImage()
-      var testCanvas = document.createElement('canvas')
-      testCanvas.width = canvas.width
-      testCanvas.height = canvas.height
-      testCanvas.getContext('2d').drawImage(testImage, 0, 0)
-      var b64TestImage = testCanvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
-
-      expect(b64Image).to.be.equal(b64TestImage)
-    })
-
-  })
-
-  it('zoom canvas', function(){
-    var canvas = getCanvas()
-    var originalHeight = canvas.style.height
-    var originalWidth = canvas.style.width
-    container.zoom(2)  
-    expect(canvas.style.height).to.be.equal(`${originalHeight.match(/\d+/g) * 2}px`)
-    expect(canvas.style.width).to.be.equal(`${originalWidth.match(/\d+/g) * 2}px`)
-  })
-
-  function getCanvas(){
-    return document.querySelector("canvas#container")
-  }
-
-  function getContext(){
-    return getCanvas().getContext("2d")
-  }
-
   function getRGBAFromImage(x, y, width, height){
     var context = getContext()
     var imageData = context.getImageData(x, y, width, height)
@@ -92,24 +67,83 @@ describe('Canvas Container', function() {
     }
   }
 
-  function getTestingImage(){
-    var characterImage = new Image()
+  function getContext(){
+    return getCanvas().getContext("2d")
+  }
+
+  describe('Working with images', function(){
+    var canvas
+    var image
+    var testCanvas
+    var testImage
+
+    beforeEach(function() {
+      canvas = document.querySelector("canvas#container")
+      testCanvas = createCanvas(canvas.width, canvas.height)
+      image = getImage('images/CharacterVector.png', 86, 86)
+      testImage = getImage('images/CharacterVector.png', 86, 86)
+    })
+
+    it('Draw an image with x and y coordinates', function(){           
+      container.drawImage(image, 0, 0)  
+      var b64Image = getImageAsB64FromCanvas(canvas)
+    
+      testCanvas.getContext('2d').drawImage(testImage, 0, 0)
+      var b64TestImage = getImageAsB64FromCanvas(testCanvas)
+
+      expect(b64Image).to.be.equal(b64TestImage)
+    })
+
+    it('Draw an image with x and y coordinates plus width and height', function(){           
+      container.drawImage(image, 0, 0, 80, 80)
+      var b64Image = getImageAsB64FromCanvas(canvas)
+      
+      testCanvas.getContext('2d').drawImage(testImage, 0, 0, 80, 80)
+      var b64TestImage = getImageAsB64FromCanvas(testCanvas)
+
+      expect(b64Image).to.be.equal(b64TestImage)
+    })
+
+    function createCanvas(width, height){      
+      var testCanvas = document.createElement('canvas')
+      testCanvas.width = width
+      testCanvas.height = height
+      return testCanvas
+    }
+
+    function getImageAsB64FromCanvas(canvas){
+      return canvas.toDataURL('image/png').replace(/^data:image.+;base64,/, '')
+    }
+
+  })
+
+  function getImage(filename, width, height){
+    var characterImage = new Image(filename, width, height)
     characterImage.onload = imageFound;
     characterImage.onerror = imageNotFound;
-    characterImage.src = 'images/CharacterVector.png'
-    characterImage.width = 86
-    characterImage.height = 86
+    characterImage.src = filename
+    characterImage.width = width
+    characterImage.height = height
     return characterImage
   }
 
   function imageFound(){
     console.log("Image found");
-    //console.log("- Width: " + this.width)
-    //console.log("- Height: " + this.width)
   }
 
   function imageNotFound(){
     console.log("[X] Image Not found!");
   }
+
+  describe('Working with animation', function(){
+
+    it('x', function(){
+      var actor = EntityFactory.getInstance().createActor()
+      var image = getImage('images/CharacterVectorAnimation.png', 334, 500)
+      container.drawActor(image, actor)
+      expect(true).to.be.true
+    })
+
+  })
 
 })

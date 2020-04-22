@@ -4,56 +4,89 @@
     <meta charset="utf-8">
     <title>Game</title>
     <link rel="stylesheet" href="css/app.css" />
-    <script lang="text/javascript" src="js/base-object.js"></script>
-    <script lang="text/javascript" src="js/container.js"></script>
-    <script lang="text/javascript" src="js/game-loop.js"></script>
-    <script lang="text/javascript" src="js/user-input.js"></script>
 </head>
-
 <body id="app">
     <canvas id="container" width="256" height="224"></canvas>
-    <script>
-        var gameLoop = GameLoop.getInstance()
-
-        window.requestAnimationFrame = window.requestAnimationFrame
-            || window.mozRequestAnimationFrame
-            || window.webkitRequestAnimationFrame
-            || window.msRequestAnimationFrame
-            || function(callback){
-            return setTimeout(callback, gameLoop.MAX_FPS)
-        } 
-
-        window.cancelAnimationFrame = window.cancelAnimationFrame
-            || window.mozCancelAnimationFrame
-            || function(requestID){
-            clearTimeout(requestID)
-        }
-        
-        gameLoop.setAnimationFrame(window.requestAnimationFrame);
-        gameLoop.setCancelAnimationFrame(window.cancelAnimationFrame);
-        var container = Container.getInstance();        
-        var width = 50;
-        
-        var fnDrawRect = function(){
-            console.log("fnDrawRect()");
-            container.fillRect(0, 0, width, 50, '#00FF00');
-            if (width < 100){
-                width += 1;
-            }
-        }
-        gameLoop.addAction(fnDrawRect)
-
-        var fnDrawCharacter = function(){
-            console.log("fnDrawCharacter()");
-            var img = new Image();
-            img.src = 'images/CharacterVector.png'
-            container.drawImage(10, 60, img)
-        }
-        gameLoop.addAction(fnDrawCharacter)
-
-        gameLoop.run();
-        setTimeout(function(){ gameLoop.stop()}, 2000);
-
-    </script>
 </body>
+<script lang="text/javascript" src="js/entity-factory.js"></script>
+<script lang="text/javascript" src="js/container.js"></script>
+<script lang="text/javascript" src="js/game-loop.js"></script>
+<script lang="text/javascript" src="js/user-input.js"></script>
+
+<script>
+    var gameLoop = GameLoop.getInstance()
+    window.requestAnimationFrame = window.requestAnimationFrame
+        || window.mozRequestAnimationFrame
+        || window.webkitRequestAnimationFrame
+        || window.msRequestAnimationFrame
+        || function(callback){
+        return setTimeout(callback, gameLoop.MAX_FPS)
+    } 
+
+    window.cancelAnimationFrame = window.cancelAnimationFrame
+        || window.mozCancelAnimationFrame
+        || function(requestID){
+        clearTimeout(requestID)
+    }
+
+    gameLoop.setAnimationFrame(window.requestAnimationFrame);
+    gameLoop.setCancelAnimationFrame(window.cancelAnimationFrame);
+    var container = Container.getInstance();      
+  
+    container.zoom(2);
+
+    /*
+    var width = 50;
+    var fnDrawRect = function(){
+        console.log("fnDrawRect()");
+        container.fillRect(0, 0, width, 50, '#00FF00');
+        if (width < 100){
+            width += 1;
+        }
+    }
+    gameLoop.addAction(fnDrawRect)
+
+    var fnDrawCharacter = function(){
+        console.log("fnDrawCharacter()");
+        var img = new Image();
+        img.src = 'images/CharacterVector.png'
+        container.drawImage(img, 10, 60)
+    }
+    gameLoop.addAction(fnDrawCharacter)
+    */
+
+    var actor = EntityFactory.getInstance().createActor()
+    var fnDrawActor = function(){
+        container.clearRect(0, 0, 256, 224)
+        actor.sequence.values = [0,1,2,3]
+        var image = new Image();
+        image.src = 'images/CharacterVectorAnimation.png'
+        container.drawActor(image, actor)
+    }
+    gameLoop.addAction(fnDrawActor)
+    
+    gameLoop.run();
+    setTimeout(function(){ gameLoop.stop()}, 2000);
+
+
+    function getImage(filename, width, height){
+    var characterImage = new Image(filename, width, height)
+    characterImage.onload = imageFound;
+    characterImage.onerror = imageNotFound;
+    characterImage.src = filename
+    characterImage.width = width
+    characterImage.height = height
+    return characterImage
+  }
+
+  function imageFound(){
+    console.log("Image found");
+    console.log("- Width: " + this.width)
+    console.log("- Height: " + this.width)
+  }
+
+  function imageNotFound(){
+    console.log("[X] Image Not found!");
+  }
+</script>
 </html>
