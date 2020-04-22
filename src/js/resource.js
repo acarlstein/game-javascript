@@ -7,11 +7,12 @@ var Resource = (function (){
         return;
       }
       var request = new XMLHttpRequest();
-      request.overrideMimeType("applicatino/json");
+      request.overrideMimeType("application/json");
       request.open('GET', filename, ADD_PATH_TO_FILENAME);
       request.onreadystatechange = function(){
         if (request.status = 200 
-            && request.readyState == 4){
+            && (request.readyState == 4
+                || request.readyState == 0)){
           callback(request.responseText);
         }
       };

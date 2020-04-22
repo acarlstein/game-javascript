@@ -30,6 +30,10 @@ var Container = (function () {
     return canvas
   }
 
+  function getNextSequenceFromActor(actor){
+    return actor.sequence.values[actor.sequence.index] * (actor.width + actor.offset.width)
+  }
+
   var container = {
     class: "Container",
     width: getCanvas().width,
@@ -55,11 +59,17 @@ var Container = (function () {
       getCanvas().style.cssText = cssProperties
       getCanvas().parentNode.style.cssText = cssProperties
     },
-    drawActor: function(image, actor){ 
-      actor.sprite.x = action.sequence.values[actor.sequence.index] * 16     
+    drawActor: function(image, actor){       
+      actor.sprite.x = getNextSequenceFromActor(actor)   
       getContext().drawImage(image, 
-        actor.sprite.x, actor.sprite.y, actor.sprite.width, actor.sprite.height,
-        actor.x, actor.y, actor.width, actor.height
+        actor.sprite.x + actor.sprite.offset.x, 
+        actor.sprite.y + actor.sprite.offset.y, 
+        actor.sprite.width + actor.sprite.offset.width, 
+        actor.sprite.height + actor.sprite.offset.height,
+        actor.x + actor.offset.x, 
+        actor.y + actor.offset.y, 
+        actor.width + actor.offset.width, 
+        actor.height + + actor.offset.height
       )
       if (actor.sequence.index < actor.sequence.values.length - 1){
         actor.sequence.index++
@@ -67,7 +77,6 @@ var Container = (function () {
         actor.sequence.index = 0
       }
     }
-
   };
 
   function createInstance() {
