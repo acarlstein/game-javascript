@@ -1,7 +1,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Game: Dev Tools: Run Unit Tests</title>  
+    <title>Run Unit Tests</title>  
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
     <style>
@@ -14,7 +14,7 @@
     </style>
   </head>
   <body>
-    <h2>Game: Dev Tools: Run Unit Test</h2>
+    <h2>Game: Run Unit Test</h2>
     <div id="mocha"></div>    
     <script src="https://unpkg.com/chai/chai.js"></script>
     <script src="https://unpkg.com/chai-spies@1.0.0/chai-spies.js"></script>
@@ -26,12 +26,19 @@
     </script>
     <!-- *** Begin Dependecy Code *** -->
     
+
     <!-- *** End Dependecy Code *** -->
     <!-- *** Being including element to be tested *** -->
-
+    <script src="../src/js/entity-factory.js"></script>
+    <script src="../src/js/container.js"></script>
+    <script src="../src/js/game-loop.js"></script>
+    <script src="../src/js/user-input.js"></script>
     <!-- *** End including element to be tested *** -->
     <!-- *** Begin Invoking Unit Tests Here *** -->    
     <script src="test.spec.js"></script>
+    <script src="js/container.spec.js"></script>
+    <script src="js/game-loop.spec.js"></script>
+    <script src="js/user-input.spec.js"></script>
     <!-- *** End Invoking Unit Tests Here *** -->
     <script class="mocha-exec">
       mocha.run();
